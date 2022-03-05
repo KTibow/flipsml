@@ -5,10 +5,10 @@ document.parseHTML = (html) => {
 };
 const getCraftPrice = (elem) => {
   let buyPrice = 0;
-  const craftingIngredients = this.getAttribute("data-item-types");
+  const craftingIngredients = elem.getAttribute("data-item-types");
   for (let i = 1; i <= craftingIngredients; i++) {
     const bzInfo = window.bazaar.products[elem.getAttribute(`data-in-item-${i}`)];
-    const count = this.getAttribute(`data-in-count-${i}`);
+    const count = elem.getAttribute(`data-in-count-${i}`);
     buyPrice += bzInfo.sell_summary[0]?.pricePerUnit * count;
   }
   return buyPrice;
