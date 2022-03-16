@@ -5,9 +5,14 @@ class Flip extends HTMLElement {
     const buyPrice = this.findBuyPrice();
     const sellPrice = this.findSellPrice();
     const [worstPrice, lossExplanation] = this.getLossData();
-    const maxCount = this.repeatLimit
-      ? Math.min(Math.floor(1000000 / buyPrice), this.repeatLimit)
-      : Math.floor(1000000 / buyPrice);
+
+    const maxCount = Math.max(
+      this.repeatLimit
+        ? Math.min(Math.floor(1000000 / buyPrice), this.repeatLimit)
+        : Math.floor(1000000 / buyPrice),
+      1
+    );
+    const isCostly = maxCount == 1;
     this.profitPerMil = (sellPrice - buyPrice) * maxCount;
 
     const hasVideo = this.getAttribute("data-video") !== null;
@@ -19,8 +24,10 @@ class Flip extends HTMLElement {
         <h2 class="text-3xl font-bold">${this.getAttribute("data-title")}</h2>
         <p>${this.type}</p>
         <hr class="border-mypurple-500 my-2" />
-        <p><i>If you spent 1mil coins on this flip...</i></p>
-        <p>You could do it ${maxCount} times.</p>
+        <p><i>If you spent ${
+          isCostly ? buyPrice.toLocaleString() : "1mil"
+        } coins on this flip...</i></p>
+        <p>You could do it ${isCostly ? "once" : `${maxCount} times`}.</p>
         ${
           hasReq
             ? `
@@ -30,6 +37,11 @@ class Flip extends HTMLElement {
                   </span>
                 </p>
               `
+            : ""
+        }
+        ${
+          isCostly
+            ? "<p>⚠️ This flip costs more than 1 million coins to perform once.</p>"
             : ""
         }
         <br>
@@ -50,6 +62,7 @@ class Flip extends HTMLElement {
             </p>
             <hr class="border-mypurple-500 my-2" />
             <p>${lossExplanation}</p>
+            <p><i>Usually this shouldn't be a problem.</i></p>
           </div>
         </div>
         <br>
@@ -223,6 +236,14 @@ Promise.all([
         data-ingredient-count="2" data-ingredient-0-id="ENCHANTED_EMERALD" data-ingredient-0-count="8"
         data-ingredient-1-id="WOLF_TOOTH" data-ingredient-1-count="16" data-req="Wolf Slayer 2"
         data-video="https://www.youtube.com/watch?v=_zSMSv72Y_g&t=356"></craft-to-ah-flip>`,
+    `<craft-to-ah-flip data-title="Superior Dragon Boots" data-id="SUPERIOR_DRAGON_BOOTS"
+        data-ingredient-count="1" data-ingredient-0-id="SUPERIOR_FRAGMENT" data-ingredient-0-count="40"
+        data-video="https://www.youtube.com/watch?v=wniKYUFD9kw&t=91"></craft-to-ah-flip>`,
+    `<craft-to-ah-flip data-title="Aspect of the End" data-id="ASPECT_OF_THE_END"
+        data-ingredient-count="2" data-ingredient-0-id="ENCHANTED_DIAMOND" data-ingredient-0-count="1"
+        data-ingredient-1-id="ENCHANTED_EYE_OF_ENDER" data-ingredient-1-count="32"
+        data-req="Ender Pearl collection VIII"
+        data-video="https://www.youtube.com/watch?v=wniKYUFD9kw&t=381"></craft-to-ah-flip>`,
 
     `<craft-to-bazaar-flip data-title="Polished Pumpkin" data-id="POLISHED_PUMPKIN"
         data-ingredient-count="1" data-ingredient-0-id="ENCHANTED_PUMPKIN" data-ingredient-0-count="160"
