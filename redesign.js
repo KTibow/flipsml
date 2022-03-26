@@ -62,7 +62,6 @@ class Flip extends HTMLElement {
             </p>
             <hr class="border-mypurple-500 my-2" />
             <p>${lossExplanation}</p>
-            <p><i>Usually this shouldn't be a problem.</i></p>
           </div>
         </div>
         <br>
@@ -90,6 +89,7 @@ class Flip extends HTMLElement {
 }
 class MarginFlip extends Flip {
   type = "Margin Flip";
+  repeatLimit = 64 * 27 * 3;
   findBuyPrice() {
     return window.buyPrices[this.getAttribute("data-id")];
   }
@@ -123,6 +123,7 @@ class CraftToAHFlip extends Flip {
 }
 class CraftToBazaarFlip extends Flip {
   type = "Craft to Bazaar Flip";
+  repeatLimit = (64 * 27 * 3) / 64;
   findBuyPrice() {
     return findCraftSum(this, window.buyPrices, window.sellPrices);
   }
@@ -219,6 +220,26 @@ Promise.all([
         data-video="https://www.youtube.com/watch?v=-2qrPDa_bHY&t=262s"></margin-flip>`,
     `<margin-flip data-title="Enchanted Glowstone Dust" data-id="ENCHANTED_GLOWSTONE_DUST"
         data-video="https://www.youtube.com/watch?v=-2qrPDa_bHY&t=316s"></margin-flip>`,
+    `<margin-flip data-title="Carrot Bait" data-id="CARROT_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Minnow Bait" data-id="MINNOW_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Fish Bait" data-id="FISH_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Dark Bait" data-id="DARK_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Blessed Bait" data-id="BLESSED_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Whale Bait" data-id="WHALE_BAIT"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=288s"></margin-flip>`,
+    `<margin-flip data-title="Enchanted Ice" data-id="ENCHANTED_ICE"
+        data-video="https://www.youtube.com/watch?v=QCjRbZCje0Q&t=112s"></margin-flip>`,
+    `<margin-flip data-title="Enchanted Netherrack" data-id="ENCHANTED_NETHERRACK"
+        data-video="https://www.youtube.com/watch?v=QCjRbZCje0Q&t=194s"></margin-flip>`,
+    `<margin-flip data-title="Wolf Tooth" data-id="WOLF_TOOTH"
+        data-video="https://www.youtube.com/watch?v=QCjRbZCje0Q&t=283s"></margin-flip>`,
+    `<margin-flip data-title="Enchanted Ghast Tear" data-id="ENCHANTED_GHAST_TEAR"
+        data-video="https://www.youtube.com/watch?v=QCjRbZCje0Q&t=401s"></margin-flip>`,
 
     `<craft-to-ah-flip data-title="Wise Dragon Boots" data-id="WISE_DRAGON_BOOTS"
         data-ingredient-count="1" data-ingredient-0-id="WISE_FRAGMENT" data-ingredient-0-count="40"
@@ -244,6 +265,11 @@ Promise.all([
         data-ingredient-1-id="ENCHANTED_EYE_OF_ENDER" data-ingredient-1-count="32"
         data-req="Ender Pearl collection VIII"
         data-video="https://www.youtube.com/watch?v=wniKYUFD9kw&t=381"></craft-to-ah-flip>`,
+    `<craft-to-ah-flip data-title="Null Edge" data-id="NULL_EDGE"
+        data-ingredient-count="2" data-ingredient-0-id="NULL_ATOM" data-ingredient-0-count="3"
+        data-ingredient-1-id="ENCHANTED_MITHRIL" data-ingredient-1-count="192"
+        data-req="Enderman Slayer I (maybe?)"
+        data-video="https://www.youtube.com/watch?v=IHbjcZQJoXI&t=325"></craft-to-ah-flip>`,
 
     `<craft-to-bazaar-flip data-title="Polished Pumpkin" data-id="POLISHED_PUMPKIN"
         data-ingredient-count="1" data-ingredient-0-id="ENCHANTED_PUMPKIN" data-ingredient-0-count="160"
@@ -253,6 +279,47 @@ Promise.all([
         data-ingredient-count="1" data-ingredient-0-id="ENCHANTED_PORK" data-ingredient-0-count="160"
         data-req="Raw Porkchop collection VII"
         data-video="https://www.youtube.com/watch?v=_zSMSv72Y_g&t=224"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Enchanted Raw Beef" data-id="ENCHANTED_RAW_BEEF"
+        data-ingredient-count="1" data-ingredient-0-id="RAW_BEEF" data-ingredient-0-count="160"
+        data-req="Leather Collection IV"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=80"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Enchanted Red Mushroom Block" data-id="ENCHANTED_HUGE_MUSHROOM_2"
+        data-ingredient-count="1" data-ingredient-0-id="HUGE_MUSHROOM_2" data-ingredient-0-count="576"
+        data-req="Mushroom Collection VIII"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=193"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Enchanted Brown Mushroom Block" data-id="ENCHANTED_HUGE_MUSHROOM_1"
+        data-ingredient-count="1" data-ingredient-0-id="HUGE_MUSHROOM_1" data-ingredient-0-count="576"
+        data-req="Mushroom Collection VIII"
+        data-video="https://www.youtube.com/watch?v=S1bA-QgJrks&t=260"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Tarantula Silk" data-id="TARANTULA_SILK"
+        data-ingredient-count="2" data-ingredient-0-id="ENCHANTED_FLINT" data-ingredient-0-count="32"
+        data-ingredient-1-id="TARANTULA_WEB" data-ingredient-1-count="128"
+        data-req="Spider Slayer 2"
+        data-video="https://www.youtube.com/watch?v=IHbjcZQJoXI&t=99"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Golden Tooth" data-id="GOLDEN_TOOTH"
+        data-ingredient-count="2" data-ingredient-0-id="ENCHANTED_GOLD" data-ingredient-0-count="32"
+        data-ingredient-1-id="WOLF_TOOTH" data-ingredient-1-count="128"
+        data-req="Wolf Slayer 2"
+        data-video="https://www.youtube.com/watch?v=IHbjcZQJoXI&t=468"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Enchanted Cookie" data-id="ENCHANTED_COOKIE"
+        data-ingredient-count="2" data-ingredient-0-id="WHEAT" data-ingredient-0-count="32"
+        data-ingredient-1-id="ENCHANTED_COCOA" data-ingredient-1-count="128"
+        data-req="Cocoa Beans Collection VI"
+        data-video="https://www.youtube.com/watch?v=TQCnGq45WkI&t=140"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Revenant Viscera" data-id="REVENANT_VISCERA"
+        data-ingredient-count="2" data-ingredient-0-id="ENCHANTED_STRING" data-ingredient-0-count="32"
+        data-ingredient-1-id="REVENANT_FLESH" data-ingredient-1-count="128"
+        data-req="Zombie Slayer 2"
+        data-video="https://www.youtube.com/watch?v=TQCnGq45WkI&t=342"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Enchanted Baked Potato" data-id="ENCHANTED_BAKED_POTATO"
+        data-ingredient-count="1" data-ingredient-0-id="ENCHANTED_POTATO" data-ingredient-0-count="160"
+        data-req="Potato Collection VII"
+        data-video="https://www.youtube.com/watch?v=TQCnGq45WkI&t=506"></craft-to-bazaar-flip>`,
+    `<craft-to-bazaar-flip data-title="Hot Potato Book" data-id="HOT_POTATO_BOOK"
+        data-ingredient-count="2" data-ingredient-0-id="SUGAR_CANE" data-ingredient-0-count="3"
+        data-ingredient-1-id="ENCHANTED_BAKED_POTATO" data-ingredient-1-count="1"
+        data-req="Potato Collection VII"
+        data-video="https://www.youtube.com/watch?v=TQCnGq45WkI&t=588"></craft-to-bazaar-flip>`,
 
     `<npc-to-bazaar-flip data-title="Packed Ice" data-id="PACKED_ICE" data-buy="9"
         data-video="https://www.youtube.com/watch?v=_zSMSv72Y_g&t=283s"></npc-to-bazaar-flip>`,
@@ -268,6 +335,8 @@ Promise.all([
         data-video="https://www.youtube.com/watch?v=-juQxAvFPnw&t=413"></bazaar-to-npc-flip>`,
     `<bazaar-to-npc-flip data-title="Enchanted Pufferfish" data-id="ENCHANTED_PUFFERFISH" data-sell="2400"
         data-video="https://www.youtube.com/watch?v=-juQxAvFPnw&t=453"></bazaar-to-npc-flip>`,
+    `<bazaar-to-npc-flip data-title="Enchanted Cocoa Bean" data-id="ENCHANTED_COCOA" data-sell="480"
+        ></bazaar-to-npc-flip>`,
   ].map((flip) => {
     const flipWrapper = document.createElement("template");
     flipWrapper.innerHTML = flip;

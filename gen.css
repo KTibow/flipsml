@@ -655,6 +655,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-mypurple-100 {
+  --tw-text-opacity: 1;
+  color: hsl(261.2 36% 70.0% / var(--tw-text-opacity));
+}
+
 .text-red-200 {
   --tw-text-opacity: 1;
   color: rgb(254 202 202 / var(--tw-text-opacity));
