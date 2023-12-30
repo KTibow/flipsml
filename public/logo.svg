@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" x="0" y="0" fill="#29234e" rx="0" ry="0"/>
+  <text x="512" y="512" fill="#fff" font-family="Inter" font-size="840" text-anchor="middle" dominant-baseline="central">F</text>
+  <text x="512" y="512" fill="#fff" opacity=".6" font-family="Inter" font-size="940" text-anchor="middle" dominant-baseline="central">F</text>
+  <text x="512" y="512" fill="#fff" opacity=".55" font-family="Inter" font-size="1040" text-anchor="middle" dominant-baseline="central">F</text>
+  <text x="512" y="512" fill="#fff" opacity=".5" font-family="Inter" font-size="1140" text-anchor="middle" dominant-baseline="central">F</text>
+  <text x="512" y="512" fill="#fff" opacity=".45" font-family="Inter" font-size="1240" text-anchor="middle" dominant-baseline="central">F</text>
+</svg>

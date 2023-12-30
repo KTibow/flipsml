@@ -5,6 +5,7 @@ import fg from "fast-glob";
 const html = await fg(["**/*.html", "!build/**/*", "!public/**/*"]);
 export default defineConfig({
   root: "src",
+  publicDir: "../public",
   plugins: [svelte({})],
   build: {
     outDir: "../dist",
