@@ -562,27 +562,19 @@ export const calculateOutput = (
   },
 ) => {
   const tier = minion.tiers[data.tier];
+  const time = data.minutes * 60;
   const speed = minion.oneAction ? tier.speed : tier.speed * 2;
-
-  let time = data.minutes * 60;
+  const iterations = Math.floor(time / speed);
 
   const resources: Record<string, number> = {};
 
-  while (true) {
-    if (time - speed < 0) {
-      break;
-    }
-    time -= speed;
-
-    let added = 0;
-    for (let [id, amount] of Object.entries(minion.produces)) {
-      resources[id] = (resources[id] || 0) + amount;
-      added += amount;
-    }
-    if (data.diamond_spreading) {
-      resources["DIAMOND"] = (resources["DIAMOND"] || 0) + 0.1 * added;
-    }
+  let totalProduced = 0;
+  for (const [id, amount] of Object.entries(minion.produces)) {
+    resources[id] = (resources[id] || 0) + amount * iterations;
+    totalProduced += amount * iterations;
   }
+  if (data.diamond_spreading)
+    resources["DIAMOND"] = (resources["DIAMOND"] || 0) + 0.1 * totalProduced;
 
   if (data.compactor != "none") {
     let compacted = false;
