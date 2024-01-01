@@ -51,9 +51,6 @@
             if (price > settings.budget) continue;
 
             const resources = calculateOutput(minion, config);
-            for (const id in resources) {
-              resources[id] *= settings.afkDivisor;
-            }
 
             let baseRevenue = 0;
             for (const [id, amount] of Object.entries(resources)) {
@@ -126,7 +123,7 @@
                   fraction_stored +
                   (1 - fraction_stored) *
                     (hopper == "enchanted" ? 0.9 : hopper == "budget" ? 0.5 : 0);
-                const revenue = baseRevenue * price_multiplier;
+                const revenue = baseRevenue * price_multiplier * settings.afkDivisor;
 
                 const profit = revenue - (price + priceAddon);
                 if (profit < 0) continue;
