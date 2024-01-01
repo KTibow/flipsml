@@ -135,7 +135,12 @@
                   hopper,
                   diamond_spreading,
                   compactor,
-                  resources,
+                  resources: Object.fromEntries(
+                    Object.entries(resources).map(([id, amount]) => [
+                      id,
+                      amount * settings.afkDivisor,
+                    ]),
+                  ),
                   price: price + priceAddon,
                   revenue,
                   profit,
