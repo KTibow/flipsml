@@ -55,6 +55,7 @@
         (4 / 83) * getSellPrice("SUMMONING_EYE"),
       data: {
         How: "Draconic Altar",
+        Warning: "Catacombs 20 required",
       },
     };
   };
