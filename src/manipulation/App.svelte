@@ -29,7 +29,7 @@
   <a href="/" class="rounded-full bg-theme-600 px-3 py-2">Home</a>
   <button on:click={updateData} class="rounded-full bg-theme-600 px-3 py-2">Refresh</button>
 </div>
-<div class="mb-2 flex flex-col gap-2">
+<div class="mb-6 flex flex-col gap-2">
   <label class="flex items-center gap-2">
     <input type="number" bind:value={settings.budget} class="rounded-md bg-theme-700 px-3 py-2" />
     Budget
