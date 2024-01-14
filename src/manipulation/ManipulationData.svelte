@@ -32,9 +32,9 @@
     let totalOut = 0;
 
     for (const time of ["6h", "12h", "18h", "24h"]) {
-      const soldIn6h = Math.min(items, instaboughtDaily / 4);
+      const soldIn6h = Math.floor(Math.min(items, instaboughtDaily / 4));
       totalOut += soldIn6h;
-      const intakeIn6h = instasoldDaily / 4;
+      const intakeIn6h = Math.floor(instasoldDaily / 4);
       totalIn += intakeIn6h;
       items -= soldIn6h;
       coins += soldIn6h * goalHigh;
@@ -99,18 +99,14 @@
             ☑️ Create a buy order at {goalLow.toLocaleString(undefined, {
               maximumFractionDigits: 1,
             })}c to keep it from dropping
-            <span class="opacity-80"
-              >taking in {totalIn.toLocaleString(undefined, { maximumFractionDigits: 0 })}x</span
-            >
+            <span class="opacity-80">taking in {totalIn.toLocaleString()}x</span>
           </p>
           <p>
             ☑️ Continously sell out your items to instabuyers at {goalHigh.toLocaleString(
               undefined,
               { maximumFractionDigits: 1 },
             )}c
-            <span class="opacity-80"
-              >selling {totalOut.toLocaleString(undefined, { maximumFractionDigits: 0 })}x</span
-            >
+            <span class="opacity-80">selling {totalOut.toLocaleString()}x</span>
           </p>
         </div>
         <div class="flex-1 rounded-md bg-theme-600 p-2">
