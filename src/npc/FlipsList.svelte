@@ -1,5 +1,6 @@
 <script lang="ts">
-  export let bazaar: Record<string, any>;
+  import { type BazaarItem } from "../common";
+  export let bazaar: Record<string, BazaarItem>;
   export let items: Record<string, any>;
   export let settings: {
     buyPricing: string;

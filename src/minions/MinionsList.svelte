@@ -1,9 +1,11 @@
 <script lang="ts">
   import VirtualList from "@sveltejs/svelte-virtual-list";
   import { tick } from "svelte";
+
+  import { type BazaarItem } from "../common";
   import { calculatePrice, calculateOutput, minions, storageProgression } from "./minions";
 
-  export let bazaar: Record<string, any>;
+  export let bazaar: Record<string, BazaarItem>;
   export let items: Record<string, any>;
   export let settings: {
     budget: number;
