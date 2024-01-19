@@ -49,10 +49,10 @@
       price: getPrice("HOLY_FRAGMENT") * 40,
       coins:
         30 * getSellPrice("ESSENCE_DRAGON") +
-        (68 / 83) * 17.5 * getSellPrice("HOLY_FRAGMENT") +
-        (9 / 83) * getSellPrice("RITUAL_RESIDUE") +
-        (2 / 83) * getSellPrice("DRAGON_HORN") +
-        (4 / 83) * getSellPrice("SUMMONING_EYE"),
+        0.45 * (68 / 83) * 17.5 * getSellPrice("HOLY_FRAGMENT") +
+        0.45 * (9 / 83) * getSellPrice("RITUAL_RESIDUE") +
+        0.45 * (2 / 83) * getSellPrice("DRAGON_HORN") +
+        0.45 * (4 / 83) * getSellPrice("SUMMONING_EYE"),
       data: {
         How: "Draconic Altar",
         Warning: "Catacombs 20 required",
