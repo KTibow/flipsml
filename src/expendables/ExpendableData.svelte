@@ -20,7 +20,7 @@
   const getSellPrice = (id: string) => {
     const b = bazaar[id];
     const sellPrice = b.buy_summary[0]?.pricePerUnit;
-    const instantSellPrice = b.sell_summary[0]?.pricePerUnit;
+    const instantSellPrice = b.sell_summary[0]?.pricePerUnit || 0;
     return (
       ((100 + settings.tax) / 100) *
       (instantSellPrice * +settings.sellPricing + sellPrice * (1 - +settings.sellPricing))
@@ -128,20 +128,20 @@
 
 <div class="flex flex-col gap-4">
   {#each Object.entries(items) as [id, { price, coins, data }]}
-    <div class="flex flex-col rounded-2xl bg-theme-700 p-4 shadow-md">
-      <h2 class="break-words text-2xl font-bold">{id}</h2>
+    <div class="bg-theme-700 flex flex-col rounded-2xl p-4 shadow-md">
+      <h2 class="text-2xl font-bold break-words">{id}</h2>
       <p class="mt-4">
         Rewards for 1 item <span class="text-red-100"
           >({price.toLocaleString(undefined, { maximumFractionDigits: 1 })}c)</span
         >
       </p>
       <div class="mt-2 flex gap-4">
-        <div class="flex h-32 w-32 flex-col rounded-2xl bg-theme-600 p-4">
-          <p>Coins</p>
-          <p class="mt-auto">+{coins.toLocaleString(undefined, { maximumFractionDigits: 1 })}c</p>
+        <div class="bg-theme-600 flex h-32 w-32 flex-col rounded-2xl p-4">
+          <p>Avg worth</p>
+          <p class="mt-auto">{coins.toLocaleString(undefined, { maximumFractionDigits: 1 })}c</p>
         </div>
         {#each Object.entries(data) as [key, value]}
-          <div class="flex h-32 w-32 flex-col rounded-2xl bg-theme-600 p-4">
+          <div class="bg-theme-600 flex h-32 w-32 flex-col rounded-2xl p-4">
             <p>{key}</p>
             <p class="mt-auto">
               {typeof value == "number"

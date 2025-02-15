@@ -78,11 +78,11 @@
 
 <div class="wrapper gap-4">
   {#each Object.entries(data) as [item, { initialBuy, coins, liquidated, liquidatedProfit, instabuyPrice, goalLow, goalHigh, totalIn, totalOut }]}
-    <div class="flex flex-col rounded-2xl bg-theme-700 p-4 shadow-md">
-      <h2 class="break-words text-2xl font-bold">{item}</h2>
+    <div class="bg-theme-700 flex flex-col rounded-2xl p-4 shadow-md">
+      <h2 class="text-2xl font-bold break-words">{item}</h2>
       <div class="mt-auto flex flex-col gap-1 pt-4">
-        <div class="flex-1 rounded-md rounded-t-xl bg-theme-600 p-2">
-          <p class="text-red-100">Bump up the instabuy price</p>
+        <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
+          <p class="text-red-100">Pump up the instabuy price</p>
           <div class="flex items-center justify-between gap-1">
             <span>{instabuyPrice.toLocaleString(undefined, { maximumFractionDigits: 1 })}c</span>
             <span>→</span>
@@ -94,7 +94,7 @@
             })}c from sell orders
           </p>
         </div>
-        <div class="flex-1 rounded-md bg-theme-600 p-2">
+        <div class="bg-theme-600 flex-1 rounded-md p-2">
           <p class="text-blue-200">Keep trading for 24h</p>
           <p>
             ☑️ Create a buy order at {goalLow.toLocaleString(undefined, {
@@ -110,7 +110,7 @@
             <span class="opacity-80">selling {totalOut.toLocaleString()}x</span>
           </p>
         </div>
-        <div class="flex-1 rounded-md bg-theme-600 p-2">
+        <div class="bg-theme-600 flex-1 rounded-md p-2">
           <p class="text-green-100">Liquidate what's left</p>
           <p>{liquidatedProfit.toLocaleString(undefined, { maximumFractionDigits: 1 })}c</p>
           <p class="opacity-80">
@@ -118,7 +118,7 @@
             {liquidated == 1 ? "item" : "items"}
           </p>
         </div>
-        <div class="flex-1 rounded-md rounded-b-xl bg-theme-600 p-2">
+        <div class="bg-theme-600 flex-1 rounded-md rounded-b-xl p-2">
           <p class="text-theme-50">Profit</p>
           <p>{coins.toLocaleString(undefined, { maximumFractionDigits: 1 })}c</p>
         </div>

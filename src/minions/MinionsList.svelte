@@ -1,5 +1,5 @@
 <script lang="ts">
-  import VirtualList from "@sveltejs/svelte-virtual-list";
+  import VirtualList from "svelte-tiny-virtual-list";
   import { tick } from "svelte";
 
   import { type BazaarItem } from "../common";
@@ -164,10 +164,10 @@
 
 {#if state != "updating"}
   <div class="mb-6 flex gap-4">
-    <button class="rounded-full bg-theme-700 px-3 py-2" on:click={updatePresets}>
+    <button class="bg-theme-700 rounded-full px-3 py-2" on:click={updatePresets}>
       Recalculate
     </button>
-    <select bind:value={filter} placeholder="Search" class="rounded-md bg-theme-700 px-3 py-2">
+    <select bind:value={filter} placeholder="Search" class="bg-theme-700 rounded-md px-3 py-2">
       <option value="">All minions</option>
       {#each Object.entries(minions) as [name, minion]}
         {#each Object.keys(minion.tiers) as tier}
@@ -186,48 +186,45 @@
     That type of minion isn't showing up here. Try increasing your budget or AFK time to make it
     more profitable.
   </p>
+{:else}
+  <VirtualList width="100%" height={800} itemCount={filtered.length} itemSize={120}>
+    <div
+      slot="item"
+      class="bg-theme-700 mb-4 flex flex-col rounded-2xl p-4 shadow-md"
+      let:index
+      let:style
+      style={style.replace("height:120px;", "")}
+    >
+      {@const item = filtered[index]}
+      {@const describer = [
+        `tier ${item.tier}`,
+        item.storage != "none" ? `${item.storage} storage` : undefined,
+        item.hopper != "none" ? `${item.hopper} hopper` : undefined,
+        item.diamond_spreading ? "diamond spreading" : undefined,
+        item.compactor != "none" ? `${item.compactor} compactor` : undefined,
+      ]
+        .filter(Boolean)
+        .join(", ")}
+      <h2 class="mb-2 flex items-center">
+        <span class="mr-6 text-2xl font-bold break-words">{item.name}</span>
+        <div class="mr-2 rounded-full bg-indigo-500/20 px-3 py-2">
+          {item.profit.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+          <span class="opacity-80">profit</span>
+        </div>
+        <div class="mr-2 rounded-full bg-red-500/20 px-3 py-2">
+          {item.price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          <span class="opacity-80">buy</span>
+        </div>
+        <div class="rounded-full bg-green-500/20 px-3 py-2">
+          {item.revenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+          <span class="mr-2 opacity-80">revenue</span>
+          {#each Object.entries(item.resources) as [id, amount]}
+            {amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            <span class="mr-2 opacity-80">{id}</span>
+          {/each}
+        </div>
+      </h2>
+      <p>{describer}</p>
+    </div>
+  </VirtualList>
 {/if}
-<VirtualList items={filtered} let:item height="20rem">
-  {@const describer = [
-    `tier ${item.tier}`,
-    item.storage != "none" ? `${item.storage} storage` : undefined,
-    item.hopper != "none" ? `${item.hopper} hopper` : undefined,
-    item.diamond_spreading ? "diamond spreading" : undefined,
-    item.compactor != "none" ? `${item.compactor} compactor` : undefined,
-  ]
-    .filter(Boolean)
-    .join(", ")}
-  <div class="flex flex-col rounded-2xl bg-theme-700 p-4 shadow-md">
-    <h2 class="mb-2 flex items-center">
-      <span class="mr-6 break-words text-2xl font-bold">{item.name}</span>
-      <div class="mr-2 rounded-full bg-indigo-500/20 px-3 py-2">
-        {item.profit.toLocaleString(undefined, { maximumFractionDigits: 1 })}
-        <span class="opacity-80">profit</span>
-      </div>
-      <div class="mr-2 rounded-full bg-red-500/20 px-3 py-2">
-        {item.price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-        <span class="opacity-80">buy</span>
-      </div>
-      <div class="rounded-full bg-green-500/20 px-3 py-2">
-        {item.revenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-        <span class="mr-2 opacity-80">revenue</span>
-        {#each Object.entries(item.resources) as [id, amount]}
-          {amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-          <span class="mr-2 opacity-80">{id}</span>
-        {/each}
-      </div>
-    </h2>
-    <p>{describer}</p>
-  </div>
-</VirtualList>
-
-<style>
-  :global(svelte-virtual-list-viewport) {
-    height: max(20rem, 1000dvh) !important;
-  }
-  :global(svelte-virtual-list-contents) {
-    display: flex !important;
-    flex-direction: column;
-    gap: 1rem;
-  }
-</style>

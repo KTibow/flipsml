@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-theme-50: hsl(261.2, 36%, 80%);
+  --color-theme-100: hsl(261.2, 36%, 70%);
+  --color-theme-200: hsl(261.2, 34%, 60%);
+  --color-theme-300: hsl(261.2, 32%, 35%);
+  --color-theme-400: hsl(261.2, 30%, 30%);
+  --color-theme-500: hsl(261.2, 28%, 25%);
+  --color-theme-600: hsl(261.2, 26%, 20%);
+  --color-theme-700: hsl(261.2, 24%, 16.7%);
+  --color-theme-800: hsl(261.2, 22%, 13.3%);
+  --color-theme-900: hsl(261.2, 20%, 10%);
+
+  --font-sans: Inter, Roboto, system-ui, sans-serif;
+}
+
+@use "@tailwindcss/typography";
+
+:root {
+  color-scheme: dark;
+  font-feature-settings: "tnum";
+  @apply accent-theme-100;
+}
+
+body {
+  min-height: 100dvh;
+}
