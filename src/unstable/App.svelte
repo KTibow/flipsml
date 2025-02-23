@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import UnstableList from "./UnstableList.svelte";
+  import List from "./List.svelte";
 
   let bazaarData: { products: Record<string, any> } | undefined;
   let itemsData: { items: any[] } | undefined;
@@ -20,15 +20,15 @@
   onMount(updateData);
 </script>
 
-<header class="-m-2 mb-2 flex h-10 items-center rounded-full bg-theme-700 px-4">
+<header class="bg-theme-700 -m-2 mb-2 flex h-10 items-center rounded-full px-4">
   Flips - Unstable
 </header>
 <div class="mb-6 flex justify-end gap-2">
-  <a href="/" class="rounded-full bg-theme-600 px-3 py-2">Home</a>
-  <button on:click={updateData} class="rounded-full bg-theme-600 px-3 py-2">Refresh</button>
+  <a href="/" class="bg-theme-600 rounded-full px-3 py-2">Home</a>
+  <button on:click={updateData} class="bg-theme-600 rounded-full px-3 py-2">Refresh</button>
 </div>
 {#if bazaarData && itemsData}
-  <UnstableList
+  <List
     bazaar={bazaarData.products}
     items={Object.fromEntries(itemsData.items.map((item) => [item.id, item]))}
   />

@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 @import "tailwindcss";
-
+@source "./unstable/List.svelte";
 @theme {
   --color-theme-50: hsl(261.2, 36%, 80%);
   --color-theme-100: hsl(261.2, 36%, 70%);
