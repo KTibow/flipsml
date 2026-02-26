@@ -1,0 +1,7 @@
+name = "flipsml"
+main = "worker/index.ts"
+compatibility_date = "2026-02-26"
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
