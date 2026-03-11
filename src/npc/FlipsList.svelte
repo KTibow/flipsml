@@ -1,22 +1,30 @@
 <script lang="ts">
   import { type BazaarItem } from "../common";
-  export let bazaar: Record<string, BazaarItem>;
-  export let items: Record<string, any>;
-  export let settings: {
+
+  type Settings = {
     buyPricing: string;
     budgetPrice: number;
+    minCoinsUsed: number;
     budgetSlots: number;
     budgetTax: number;
   };
 
-  let flips: {
-    usable: number;
-    budgetProfit: number;
+  type Flip = {
     id: string;
     name: any;
     buyPrice: number;
-    sellPrice: any;
-  }[];
+    sellPrice: number;
+    supply: number;
+    usable: number;
+    coinsUsed: number;
+    budgetProfit: number;
+  };
+
+  export let bazaar: Record<string, BazaarItem>;
+  export let items: Record<string, any>;
+  export let settings: Settings;
+
+  let flips: Flip[];
 
   const stackSizes: Record<string, number> = {
     SALMON_OPAL: 1,
@@ -25,8 +33,8 @@
     ENCHANTED_ENDER_PEARL: 16,
   };
 
-  const calcUsable = (price: number, id: string, s: typeof settings) => {
-    const count = Math.floor(settings.budgetPrice / price);
+  const calcUsable = (price: number, id: string, s: Settings) => {
+    const count = Math.floor(s.budgetPrice / price);
     const stacks = count / (stackSizes[id] || 64);
     if (stacks > s.budgetSlots) return s.budgetSlots * (stackSizes[id] || 64);
     return count;
@@ -62,66 +70,77 @@
         }
       }
     }
-    flips = flipsList.map((flip) => {
-      let usable = calcUsable(flip.buyPrice, flip.id, settings);
-      if (usable > flip.supply) usable = flip.supply;
-      usable = Math.floor(usable);
+    flips = flipsList
+      .map((flip) => {
+        let usable = calcUsable(flip.buyPrice, flip.id, settings);
+        if (usable > flip.supply) usable = flip.supply;
+        usable = Math.floor(usable);
 
-      const profit = flip.sellPrice - flip.buyPrice;
-      return {
-        ...flip,
-        usable,
-        budgetProfit: profit * usable,
-      };
-    });
+        const profit = flip.sellPrice - flip.buyPrice;
+        const coinsUsed = usable * flip.buyPrice;
+
+        return {
+          ...flip,
+          usable,
+          coinsUsed,
+          budgetProfit: profit * usable,
+        };
+      })
+      .filter((flip) => flip.coinsUsed >= settings.minCoinsUsed);
     flips.sort((a, b) => b.budgetProfit - a.budgetProfit);
   }
 </script>
 
-<div class="wrapper gap-4">
-  {#each flips as flip}
-    <div class="flex flex-col rounded-2xl bg-theme-700 p-4 shadow-md">
-      <h2 class="break-words text-2xl font-bold">{flip.name}</h2>
-      <div class="mt-auto flex flex-col gap-1 pt-4">
-        <div class="flex-1 rounded-md rounded-t-xl bg-theme-600 p-2">
-          <p class="text-red-100">Buy</p>
-          <p>{flip.buyPrice.toLocaleString()}c</p>
-        </div>
-        <div class="flex-1 rounded-md bg-theme-600 p-2">
-          <p class="text-green-100">Sell</p>
-          <p>{flip.sellPrice.toLocaleString()}c</p>
-        </div>
-        <div class="flex-1 rounded-md rounded-b-xl bg-theme-600 p-2">
-          <p class="text-theme-50">Flip</p>
-          <div class="mt-2 grid grid-cols-2 gap-4">
-            <div>
-              <p>
-                {(flip.usable * flip.buyPrice).toLocaleString(undefined, {
-                  maximumFractionDigits: 1,
-                })}
-              </p>
-              <p class="opacity-80">Cost</p>
-            </div>
-            <div>
-              <p>
-                {flip.usable.toLocaleString()}
-              </p>
-              <p class="opacity-80">Count</p>
-            </div>
-            <div>
-              <p>{(flip.usable * flip.sellPrice).toLocaleString()}</p>
-              <p class="opacity-80">Sold</p>
-            </div>
-            <div>
-              <p class="text-theme-50">{flip.budgetProfit.toLocaleString()}</p>
-              <p class="opacity-80">Profit</p>
+{#if flips.length > 0}
+  <div class="wrapper gap-4">
+    {#each flips as flip}
+      <div class="bg-theme-700 flex flex-col rounded-2xl p-4 shadow-md">
+        <h2 class="text-2xl font-bold break-words">{flip.name}</h2>
+        <div class="mt-auto flex flex-col gap-1 pt-4">
+          <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
+            <p class="text-red-100">Buy</p>
+            <p>{flip.buyPrice.toLocaleString()}c</p>
+          </div>
+          <div class="bg-theme-600 flex-1 rounded-md p-2">
+            <p class="text-green-100">Sell</p>
+            <p>{flip.sellPrice.toLocaleString()}c</p>
+          </div>
+          <div class="bg-theme-600 flex-1 rounded-md rounded-b-xl p-2">
+            <p class="text-theme-50">Flip</p>
+            <div class="mt-2 grid grid-cols-2 gap-4">
+              <div>
+                <p>
+                  {flip.coinsUsed.toLocaleString(undefined, {
+                    maximumFractionDigits: 1,
+                  })}
+                </p>
+                <p class="opacity-80">Cost</p>
+              </div>
+              <div>
+                <p>
+                  {flip.usable.toLocaleString()}
+                </p>
+                <p class="opacity-80">Count</p>
+              </div>
+              <div>
+                <p>{(flip.usable * flip.sellPrice).toLocaleString()}</p>
+                <p class="opacity-80">Sold</p>
+              </div>
+              <div>
+                <p class="text-theme-50">{flip.budgetProfit.toLocaleString()}</p>
+                <p class="opacity-80">Profit</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  {/each}
-</div>
+    {/each}
+  </div>
+{:else}
+  <p class="bg-theme-700 rounded-2xl p-4">
+    No flips match the current max budget, slot limit, and minimum coins used.
+  </p>
+{/if}
 
 <style>
   .wrapper {
