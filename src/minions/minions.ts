@@ -22,6 +22,7 @@ export const storageProgression: Record<string, number> = {
   9: 768,
   10: 960,
   11: 960,
+  12: 960,
 };
 export const minions: Record<string, Minion> = {
   Jungle: {
@@ -487,6 +488,72 @@ export const minions: Record<string, Minion> = {
       },
     },
   },
+  Redstone: {
+    produces: { REDSTONE: 4.5 },
+    tiers: {
+      1: {
+        resources: { REDSTONE: 128 },
+        speed: 29,
+      },
+      2: {
+        resources: { REDSTONE: 384 },
+        speed: 29,
+      },
+      3: {
+        resources: { REDSTONE: 896 },
+        speed: 27,
+      },
+      4: {
+        resources: { REDSTONE: 2176 },
+        speed: 27,
+      },
+      5: {
+        resources: { REDSTONE: 2176, ENCHANTED_REDSTONE: 24 },
+        speed: 25,
+      },
+      6: {
+        resources: { REDSTONE: 2176, ENCHANTED_REDSTONE: 88 },
+        speed: 25,
+      },
+      7: {
+        resources: { REDSTONE: 2176, ENCHANTED_REDSTONE: 216 },
+        speed: 23,
+      },
+      8: {
+        resources: { REDSTONE: 2176, ENCHANTED_REDSTONE: 472 },
+        speed: 23,
+      },
+      9: {
+        resources: { REDSTONE: 2176, ENCHANTED_REDSTONE: 984 },
+        speed: 21,
+      },
+      10: {
+        resources: {
+          REDSTONE: 2176,
+          ENCHANTED_REDSTONE: 984,
+          ENCHANTED_REDSTONE_BLOCK: 8,
+        },
+        speed: 21,
+      },
+      11: {
+        resources: {
+          REDSTONE: 2176,
+          ENCHANTED_REDSTONE: 984,
+          ENCHANTED_REDSTONE_BLOCK: 24,
+        },
+        speed: 18,
+      },
+      12: {
+        resources: {
+          REDSTONE: 2176,
+          ENCHANTED_REDSTONE: 984,
+          ENCHANTED_REDSTONE_BLOCK: 56,
+          MONEY: 2000000,
+        },
+        speed: 16,
+      },
+    },
+  },
 };
 const COMPACTOR = {
   CLAY_BALL: { count: 4, output: "CLAY" },
@@ -494,6 +561,7 @@ const COMPACTOR = {
   EMERALD: { count: 9, output: "EMERALD_BLOCK" },
   GOLD_INGOT: { count: 9, output: "GOLD_BLOCK" },
   "INK_SACK:4": { count: 9, output: "LAPIS_BLOCK" },
+  REDSTONE: { count: 9, output: "REDSTONE_BLOCK" },
   SNOW_BALL: { count: 4, output: "SNOW_BLOCK" },
 };
 const SUPER_COMPACTOR = {
@@ -507,6 +575,8 @@ const SUPER_COMPACTOR = {
   GOLD_INGOT: { count: 160, output: "ENCHANTED_GOLD" },
   "INK_SACK:4": { count: 160, output: "ENCHANTED_LAPIS_LAZULI" },
   "LOG:3": { count: 160, output: "ENCHANTED_JUNGLE_WOOD" },
+  REDSTONE: { count: 160, output: "ENCHANTED_REDSTONE" },
+  ENCHANTED_REDSTONE: { count: 160, output: "ENCHANTED_REDSTONE_BLOCK" },
   SAND: { count: 160, output: "ENCHANTED_SAND" },
   SNOW_BALL: { count: 640, output: "ENCHANTED_SNOW_BLOCK" },
 };
