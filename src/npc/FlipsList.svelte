@@ -7,6 +7,8 @@
     minCoinsUsed: number;
     budgetSlots: number;
     budgetTax: number;
+    hideLowVolume: boolean;
+    capNpcSell: boolean;
   };
 
   type Flip = {
@@ -59,7 +61,7 @@
         const buy = getPrice(id);
 
         const profit = item.npc_sell_price - buy;
-        if (profit && profit > 0 && b.quick_status.sellMovingWeek > 7 * 8 * 25) {
+        if (profit && profit > 0 && (!settings.hideLowVolume || b.quick_status.sellMovingWeek > 7 * 8 * 25)) {
           flipsList.push({
             id: id,
             name: item.name,
@@ -74,8 +76,10 @@
       .map((flip) => {
         let usable = calcUsable(flip.buyPrice, flip.id, settings);
         if (usable > flip.supply) usable = flip.supply;
-        const maxByNpcSell = Math.floor(500_000_000 / flip.sellPrice);
-        usable = Math.min(usable, maxByNpcSell);
+        if (settings.capNpcSell) {
+          const maxByNpcSell = Math.floor(500_000_000 / flip.sellPrice);
+          usable = Math.min(usable, maxByNpcSell);
+        }
         usable = Math.floor(usable);
 
         const profit = flip.sellPrice - flip.buyPrice;

@@ -10,6 +10,8 @@
     minCoinsUsed: 0,
     budgetSlots: 27 * 3, // assuming flip is performed 3 times with 27 free slots
     budgetTax: 1.125,
+    hideLowVolume: true,
+    capNpcSell: true,
   };
 
   const updateData = () => {
@@ -75,6 +77,14 @@
       class="bg-theme-700 rounded-md px-3 py-2"
     />
     Max slots for flips
+  </label>
+  <label class="flex items-center gap-2">
+    <input type="checkbox" bind:checked={settings.hideLowVolume} />
+    Hide if &lt;25 sells per 3 hours
+  </label>
+  <label class="flex items-center gap-2">
+    <input type="checkbox" bind:checked={settings.capNpcSell} />
+    Cap at NPC sell limit (500M)
   </label>
 </div>
 {#if bazaarData && itemsData}
