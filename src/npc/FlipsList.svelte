@@ -16,11 +16,21 @@
     name: any;
     buyPrice: number;
     sellPrice: number;
-    supply: number;
     usable: number;
     coinsUsed: number;
     budgetProfit: number;
     limitReason: string;
+    expectedTime: string;
+  };
+
+  const formatTime = (hours: number) => {
+    if (!isFinite(hours) || hours <= 0) return "N/A";
+    const totalMinutes = Math.round(hours * 60);
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    if (h === 0) return `${m}m`;
+    if (m === 0) return `${h}h`;
+    return `${h}h ${m}m`;
   };
 
   export let bazaar: Record<string, BazaarItem>;
@@ -56,13 +66,19 @@
         const buy = getPrice(id);
 
         const profit = item.npc_sell_price - buy;
-        if (profit && profit > 0 && (settings.hideLowVolume === 0 || b.quick_status.sellMovingWeek > 7 * 8 * settings.hideLowVolume)) {
+        if (
+          profit &&
+          profit > 0 &&
+          (settings.hideLowVolume === 0 ||
+            b.quick_status.sellMovingWeek > 7 * 8 * settings.hideLowVolume)
+        ) {
           flipsList.push({
             id: id,
             name: item.name,
             buyPrice: buy,
             sellPrice: item.npc_sell_price,
-            supply: b.quick_status.sellMovingWeek / (7 * 8),
+            sellVolume: b.quick_status.sellMovingWeek,
+            buyVolume: b.quick_status.buyMovingWeek,
           });
         }
       }
@@ -77,8 +93,13 @@
           usable = settings.budgetSlots * (stackSizes[flip.id] || 64);
           limitReason = "slots";
         }
-        if (usable > flip.supply) {
-          usable = flip.supply;
+
+        const pricingWeight = +settings.buyPricing;
+        const volume =
+          pricingWeight * flip.sellVolume + (1 - pricingWeight) * flip.buyVolume;
+        const supply = volume / 56;
+        if (usable > supply) {
+          usable = supply;
           limitReason = "supply";
         }
         if (settings.capNpcSell) {
@@ -92,6 +113,8 @@
 
         const profit = flip.sellPrice - flip.buyPrice;
         const coinsUsed = usable * flip.buyPrice;
+        const hours = usable / (volume / (7 * 24));
+        const expectedTime = formatTime(hours);
 
         return {
           ...flip,
@@ -99,6 +122,7 @@
           coinsUsed,
           budgetProfit: profit * usable,
           limitReason,
+          expectedTime,
         };
       })
       .filter((flip) => flip.coinsUsed >= settings.minCoinsUsed);
@@ -113,37 +137,34 @@
         <h2 class="text-2xl font-bold break-words">{flip.name}</h2>
         <div class="mt-auto flex flex-col gap-1 pt-4">
           <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
-            <p class="text-red-100">Buy</p>
+            <p class="text-red-100">
+              Buy <span class="text-sm opacity-60">
+                {flip.coinsUsed.toLocaleString(undefined, { maximumFractionDigits: 1 })} total &bull;
+                {flip.expectedTime}
+              </span>
+            </p>
             <p>{flip.buyPrice.toLocaleString()}c</p>
           </div>
           <div class="bg-theme-600 flex-1 rounded-md p-2">
-            <p class="text-green-100">Sell</p>
+            <p class="text-green-100">
+              Sell <span class="text-sm opacity-60">
+                {(flip.usable * flip.sellPrice).toLocaleString()} total
+              </span>
+            </p>
             <p>{flip.sellPrice.toLocaleString()}c</p>
           </div>
           <div class="bg-theme-600 flex-1 rounded-md rounded-b-xl p-2">
             <p class="text-theme-50">Flip</p>
             <div class="mt-2 grid grid-cols-2 gap-4">
               <div>
-                <p>
-                  {flip.coinsUsed.toLocaleString(undefined, {
-                    maximumFractionDigits: 1,
-                  })}
-                </p>
-                <p class="opacity-80">Cost</p>
+                <p class="text-theme-50">{flip.budgetProfit.toLocaleString()}</p>
+                <p class="opacity-80">Profit</p>
               </div>
               <div>
                 <p title={flip.limitReason}>
                   {flip.usable.toLocaleString()}
                 </p>
                 <p class="opacity-80">Count</p>
-              </div>
-              <div>
-                <p>{(flip.usable * flip.sellPrice).toLocaleString()}</p>
-                <p class="opacity-80">Sold</p>
-              </div>
-              <div>
-                <p class="text-theme-50">{flip.budgetProfit.toLocaleString()}</p>
-                <p class="opacity-80">Profit</p>
               </div>
             </div>
           </div>
