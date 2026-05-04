@@ -7,7 +7,7 @@
     minCoinsUsed: number;
     budgetSlots: number;
     budgetTax: number;
-    hideLowVolume: boolean;
+    hideLowVolume: number;
     capNpcSell: boolean;
   };
 
@@ -20,6 +20,7 @@
     usable: number;
     coinsUsed: number;
     budgetProfit: number;
+    limitReason: string;
   };
 
   export let bazaar: Record<string, BazaarItem>;
@@ -35,12 +36,6 @@
     ENCHANTED_ENDER_PEARL: 16,
   };
 
-  const calcUsable = (price: number, id: string, s: Settings) => {
-    const count = Math.floor(s.budgetPrice / price);
-    const stacks = count / (stackSizes[id] || 64);
-    if (stacks > s.budgetSlots) return s.budgetSlots * (stackSizes[id] || 64);
-    return count;
-  };
   const getPrice = (id: string) => {
     const b = bazaar[id];
     const buyPrice = b.sell_summary[0]?.pricePerUnit;
@@ -61,7 +56,7 @@
         const buy = getPrice(id);
 
         const profit = item.npc_sell_price - buy;
-        if (profit && profit > 0 && (!settings.hideLowVolume || b.quick_status.sellMovingWeek > 7 * 8 * 25)) {
+        if (profit && profit > 0 && (settings.hideLowVolume === 0 || b.quick_status.sellMovingWeek > 7 * 8 * settings.hideLowVolume)) {
           flipsList.push({
             id: id,
             name: item.name,
@@ -74,11 +69,24 @@
     }
     flips = flipsList
       .map((flip) => {
-        let usable = calcUsable(flip.buyPrice, flip.id, settings);
-        if (usable > flip.supply) usable = flip.supply;
+        const count = Math.floor(settings.budgetPrice / flip.buyPrice);
+        const stacks = count / (stackSizes[flip.id] || 64);
+        let usable = count;
+        let limitReason = "budget";
+        if (stacks > settings.budgetSlots) {
+          usable = settings.budgetSlots * (stackSizes[flip.id] || 64);
+          limitReason = "slots";
+        }
+        if (usable > flip.supply) {
+          usable = flip.supply;
+          limitReason = "supply";
+        }
         if (settings.capNpcSell) {
           const maxByNpcSell = Math.floor(500_000_000 / flip.sellPrice);
-          usable = Math.min(usable, maxByNpcSell);
+          if (maxByNpcSell < usable) {
+            usable = maxByNpcSell;
+            limitReason = "npc sell cap";
+          }
         }
         usable = Math.floor(usable);
 
@@ -90,6 +98,7 @@
           usable,
           coinsUsed,
           budgetProfit: profit * usable,
+          limitReason,
         };
       })
       .filter((flip) => flip.coinsUsed >= settings.minCoinsUsed);
@@ -123,7 +132,7 @@
                 <p class="opacity-80">Cost</p>
               </div>
               <div>
-                <p>
+                <p title={flip.limitReason}>
                   {flip.usable.toLocaleString()}
                 </p>
                 <p class="opacity-80">Count</p>
