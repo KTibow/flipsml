@@ -95,8 +95,7 @@
         }
 
         const pricingWeight = +settings.buyPricing;
-        const volume =
-          pricingWeight * flip.sellVolume + (1 - pricingWeight) * flip.buyVolume;
+        const volume = pricingWeight * flip.sellVolume + (1 - pricingWeight) * flip.buyVolume;
         const supply = volume / 56;
         if (usable > supply) {
           usable = supply;
@@ -115,6 +114,16 @@
         const coinsUsed = usable * flip.buyPrice;
         const hours = usable / (volume / (7 * 24));
         const expectedTime = formatTime(hours);
+
+        console.log(
+          `%c${flip.name}`,
+          "font-weight:bold",
+          `budget=${count}`,
+          `slots=${Math.floor(settings.budgetSlots * (stackSizes[flip.id] || 64))}`,
+          `supply=${Math.floor(supply)}`,
+          settings.capNpcSell && `npcCap=${Math.floor(500_000_000 / flip.sellPrice)}`,
+          `→ ${usable} (${limitReason})`,
+        );
 
         return {
           ...flip,
@@ -138,7 +147,12 @@
         <div class="mt-auto flex flex-col gap-1 pt-4">
           <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
             <p class="text-red-100">
-              Buy <abbr class="text-sm opacity-60" title="{flip.coinsUsed.toLocaleString(undefined, { maximumFractionDigits: 1 })} total &bull; {flip.expectedTime}">
+              Buy <abbr
+                class="text-sm opacity-60"
+                title="{flip.coinsUsed.toLocaleString(undefined, {
+                  maximumFractionDigits: 1,
+                })} total &bull; {flip.expectedTime} &bull; {flip.limitReason}"
+              >
                 {flip.usable.toLocaleString()}
               </abbr>
             </p>
@@ -153,19 +167,8 @@
             <p>{flip.sellPrice.toLocaleString()}c</p>
           </div>
           <div class="bg-theme-600 flex-1 rounded-md rounded-b-xl p-2">
-            <p class="text-theme-50">Flip</p>
-            <div class="mt-2 grid grid-cols-2 gap-4">
-              <div>
-                <p class="text-theme-50">{flip.budgetProfit.toLocaleString()}</p>
-                <p class="opacity-80">Profit</p>
-              </div>
-              <div>
-                <p title={flip.limitReason}>
-                  {flip.usable.toLocaleString()}
-                </p>
-                <p class="opacity-80">Count</p>
-              </div>
-            </div>
+            <p class="text-theme-50">Profit</p>
+            <p class="text-theme-50 font-bold">{flip.budgetProfit.toLocaleString()}</p>
           </div>
         </div>
       </div>
