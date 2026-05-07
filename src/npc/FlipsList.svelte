@@ -138,10 +138,9 @@
         <div class="mt-auto flex flex-col gap-1 pt-4">
           <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
             <p class="text-red-100">
-              Buy <span class="text-sm opacity-60">
-                {flip.coinsUsed.toLocaleString(undefined, { maximumFractionDigits: 1 })} total &bull;
-                {flip.expectedTime}
-              </span>
+              Buy <abbr class="text-sm opacity-60" title="{flip.coinsUsed.toLocaleString(undefined, { maximumFractionDigits: 1 })} total &bull; {flip.expectedTime}">
+                {flip.usable.toLocaleString()}
+              </abbr>
             </p>
             <p>{flip.buyPrice.toLocaleString()}c</p>
           </div>
