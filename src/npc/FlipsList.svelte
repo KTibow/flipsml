@@ -146,16 +146,16 @@
         <h2 class="text-2xl font-bold break-words">{flip.name}</h2>
         <div class="mt-auto flex flex-col gap-1 pt-4">
           <div class="bg-theme-600 flex-1 rounded-md rounded-t-xl p-2">
-            <p class="text-red-100">
-              Buy <abbr
-                class="text-sm opacity-60"
-                title="{flip.coinsUsed.toLocaleString(undefined, {
-                  maximumFractionDigits: 1,
-                })} total &bull; {flip.expectedTime} &bull; {flip.limitReason}"
-              >
-                {flip.usable.toLocaleString()}
-              </abbr>
-            </p>
+          <p class="text-red-100">
+            Buy <abbr
+              class="text-sm opacity-60"
+              title="{flip.usable.toLocaleString()} &bull; {flip.expectedTime} &bull; {flip.limitReason}"
+            >
+              {flip.coinsUsed.toLocaleString(undefined, {
+                maximumFractionDigits: 1,
+              })} total
+            </abbr>
+          </p>
             <p>{flip.buyPrice.toLocaleString()}c</p>
           </div>
           <div class="bg-theme-600 flex-1 rounded-md p-2">
