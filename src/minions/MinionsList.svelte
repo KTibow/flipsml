@@ -33,6 +33,7 @@
     await new Promise((r) => setTimeout(r));
 
     const tax = (100 + settings.tax) / 100;
+    const sellTax = (100 - settings.tax) / 100;
     const baseConfig = {
       bazaar,
       items,
@@ -58,7 +59,7 @@
             for (const [id, amount] of Object.entries(resources)) {
               const b = bazaar[id];
               const item = items[id];
-              const instasell_price = b?.sell_summary[0]?.pricePerUnit;
+              const instasell_price = (b?.sell_summary[0]?.pricePerUnit || 0) * sellTax;
               if (b && !instasell_price) console.warn("No instasell price for", id);
               const npc_price = item?.npc_sell_price;
               const best_price = Math.max(instasell_price || 0, npc_price || 0);

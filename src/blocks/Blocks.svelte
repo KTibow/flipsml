@@ -32,7 +32,7 @@
       const sellPrice = b.buy_summary[0]?.pricePerUnit;
       const instantSellPrice = b.sell_summary[0]?.pricePerUnit;
       return (
-        ((100 + settings.tax) / 100) *
+        ((100 - settings.tax) / 100) *
         (instantSellPrice * +settings.sellPricing + sellPrice * (1 - +settings.sellPricing))
       );
     });
